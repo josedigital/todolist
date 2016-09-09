@@ -72,8 +72,8 @@ var todo = (function() {
      * then update the locaStorage 'todos'
      * then render
      */
-    function addTodo() {
-      var todoText = $todoText.val().trim();
+    function addTodo(event) {
+      var todoText = (typeof event == 'string') ? event : $todoText.val().trim();
       todosArray.push(todoText);
       updateLocal();
       $todoText.val('');
@@ -85,8 +85,8 @@ var todo = (function() {
      * then update the localStorage 'todos' 
      * then render
      */
-    function deleteItem() {
-      var itemNumber = $(this).data('id');
+    function deleteItem(event) {
+      var itemNumber = (typeof event == 'Number') ? event : $(this).data('id');
       $('#'+itemNumber).remove();
       // remove item from array, then localStorage.setItem with new array
       todosArray.splice(itemNumber, 1);
