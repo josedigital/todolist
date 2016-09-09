@@ -45,7 +45,7 @@ var todo = (function() {
 
     // bind events
     $addButton.on('click', addTodo);
-    $(document).on('click', '.delete', deleteItem);
+    $(document).on('click', '.delete', deleteTodo);
 
     
     function template(i) {
@@ -85,7 +85,7 @@ var todo = (function() {
      * then update the localStorage 'todos' 
      * then render
      */
-    function deleteItem(event) {
+    function deleteTodo(event) {
       var itemNumber = (typeof event == 'Number') ? event : $(this).data('id');
       $('#'+itemNumber).remove();
       // remove item from array, then localStorage.setItem with new array
@@ -105,7 +105,7 @@ var todo = (function() {
 
     return {
       addTodo: addTodo,
-      deleteItem: deleteItem
+      deleteTodo: deleteTodo
     };
 
 
