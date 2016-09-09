@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>To Do App!</title>
+</head>
+<body>
+
+<!-- Title -->
+<h1>My To Dos!</h1>
+
+<!-- Input Form -->
+<form>
+  <h2>To Do Item: 
+    <input type="text" id="todo">
+    <input type="submit" value="Add Item" id="addTodo">
+  </h2>
+</form>
+
+<hr>
+
+<!-- To-Do List -->
+<div id="todos">
+  
+</div>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
+
+<script>
+
+// ============================= START CODING BELOW! =============================================
+
+(function() {
+
+  var todo = {
+
+    // set vars
+    todoListItem: '',
+    counter: 0,
+    todosArray: [],
+    
+
+    template: function(i) {
+      return '<p id="' + i + '"><button class="delete" data-id="' + i  + '">X</button>' + this.todosArray[i] + '</p>';
+    },
+
+    init: function() {
+      this.cacheDom();
+      this.bindEvents();
+      this.render();
+    },
+    
+    cacheDom: function() {
+      this.$todoText = $('#todo');
+      this.$addButton = $('#addTodo');
+      this.$todoList = $('#todos');
+      this.$deleteButton = $('.delete');
+    },
+
+    bindEvents: function() {
+      this.$addButton.on('click', this.addTodo.bind(this));
+      $(document).on('click', '.delete', this.deleteItem);
+    },
+
+    render: function() {
+      this.$todoList.empty();
+      if(localStorage.getItem('todos')) {
+        this.updateArray();
+      }
+      for(var i=0; i<this.todosArray.length; i++) {
+        this.$todoList.append(this.template(i));
+      }
+    },
+
+    addTodo: function() {
+      var todoText = this.$todoText.val().trim();
+      this.todosArray.push(todoText);
+      this.updateLocal();
+      this.$todoText.val('');
+      this.render();
+      return false;
+    },
+
+    deleteItem: function() {
+      var itemNumber = $(this).data('id');
+      $('#'+itemNumber).remove();
+      // remove item from array, then localStorage.setItem with new array
+      todo.todosArray.splice(itemNumber, 1);
+      todo.updateLocal();
+      todo.render();
+    },
+
+    updateLocal: function() {
+      localStorage.setItem('todos', JSON.stringify(this.todosArray));
+    },
+
+    updateArray: function() {
+      this.todosArray = JSON.parse(localStorage.getItem('todos'));
+    }
+    
+
+
+  }
+
+  todo.init();
+
+
+})()
+
+</script>
+
+</body>
+</html>
