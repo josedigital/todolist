@@ -36,7 +36,6 @@
   var todo = {
 
     // set vars
-    todoListItem: '',
     counter: 0,
     todosArray: [],
     
@@ -55,7 +54,6 @@
       this.$todoText = $('#todo');
       this.$addButton = $('#addTodo');
       this.$todoList = $('#todos');
-      this.$deleteButton = $('.delete');
     },
 
     bindEvents: function() {
@@ -63,6 +61,10 @@
       $(document).on('click', '.delete', this.deleteItem);
     },
 
+    /* if localStorage contains the 'todos', then update the array with 
+     * whatever is in the localStorage 'todos' item
+     * then iterate over the array to render the todos
+     */
     render: function() {
       this.$todoList.empty();
       if(localStorage.getItem('todos')) {
@@ -73,6 +75,10 @@
       }
     },
 
+    /* when adding a task, push it to the array
+     * then update the locaStorage 'todos'
+     * then render
+     */
     addTodo: function() {
       var todoText = this.$todoText.val().trim();
       this.todosArray.push(todoText);
@@ -82,6 +88,10 @@
       return false;
     },
 
+    /* when deleting a task, remove it from the array
+     * then update the localStorage 'todos' 
+     * then render
+     */
     deleteItem: function() {
       var itemNumber = $(this).data('id');
       $('#'+itemNumber).remove();
