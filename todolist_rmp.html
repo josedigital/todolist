@@ -35,21 +35,21 @@ var todo = (function() {
 
 
     // cache DOM
-    $todoText = $('#todo');
-    $addButton = $('#addTodo');
-    $todoList = $('#todos');
+    var $todoText = $('#todo');
+    var $addButton = $('#addTodo');
+    var $todoList = $('#todos');
 
     // set vars
     var counter = 0,
         todosArray = [];
 
     // bind events
-    $addButton.on('click', addTodo;
+    $addButton.on('click', addTodo);
     $(document).on('click', '.delete', deleteItem);
 
     
     function template(i) {
-      return '<p id="' + i + '"><button class="delete" data-id="' + i  + '">X</button>' + this.todosArray[i] + '</p>';
+      return '<p id="' + i + '"><button class="delete" data-id="' + i  + '">X</button>' + todosArray[i] + '</p>';
     }
 
     render();
@@ -59,54 +59,59 @@ var todo = (function() {
      * then iterate over the array to render the todos
      */
     function render() {
-      this.$todoList.empty();
+      $todoList.empty();
       if(localStorage.getItem('todos')) {
-        this.updateArray();
+        updateArray();
       }
-      for(var i=0; i<this.todosArray.length; i++) {
-        this.$todoList.append(this.template(i));
+      for(var i=0; i<todosArray.length; i++) {
+        $todoList.append(template(i));
       }
-    },
+    }
 
     /* when adding a task, push it to the array
      * then update the locaStorage 'todos'
      * then render
      */
-    addTodo: function() {
-      var todoText = this.$todoText.val().trim();
-      this.todosArray.push(todoText);
-      this.updateLocal();
-      this.$todoText.val('');
-      this.render();
+    function addTodo() {
+      var todoText = $todoText.val().trim();
+      todosArray.push(todoText);
+      updateLocal();
+      $todoText.val('');
+      render();
       return false;
-    },
+    }
 
     /* when deleting a task, remove it from the array
      * then update the localStorage 'todos' 
      * then render
      */
-    deleteItem: function() {
+    function deleteItem() {
       var itemNumber = $(this).data('id');
       $('#'+itemNumber).remove();
       // remove item from array, then localStorage.setItem with new array
-      todo.todosArray.splice(itemNumber, 1);
-      todo.updateLocal();
-      todo.render();
-    },
+      todosArray.splice(itemNumber, 1);
+      updateLocal();
+      render();
+    }
 
-    updateLocal: function() {
-      localStorage.setItem('todos', JSON.stringify(this.todosArray));
-    },
+    function updateLocal() {
+      localStorage.setItem('todos', JSON.stringify(todosArray));
+    }
 
-    updateArray: function() {
-      this.todosArray = JSON.parse(localStorage.getItem('todos'));
+    function updateArray() {
+      todosArray = JSON.parse(localStorage.getItem('todos'));
     }
     
 
+    return {
+      addTodo: addTodo,
+      deleteItem: deleteItem
+    };
 
 
 
-})()
+
+})();
 
 </script>
 
